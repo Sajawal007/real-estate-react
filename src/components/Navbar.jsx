@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import Button from './Button';
+import CreateListing from '../CreateListing/CreateListing';
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = (props) => {
     let Links =[
       {name:"HOME",link:"/"},
       {name:"ABOUT",link:"/"},
-      {name:"LISTINGS",link:"/"},
-      {name:"CONTACT",link:"/"},
+      {name:"LISTINGS",link:"/listings"},
+      {name:"LOGIN",link:"/login"},
     ];
     let [open,setOpen]=useState(false);
   return (
@@ -31,9 +33,10 @@ const Navbar = () => {
             </li>
           ))
         }
-        <Button className="md:ml-8">
+        <Link to='/create' state={{ properties: props.properties,setListingObject: props.setListingObject }}><Button className="md:ml-8">
           Add Listing
         </Button>
+        </Link>
       </ul>
       </div>
     </div>
