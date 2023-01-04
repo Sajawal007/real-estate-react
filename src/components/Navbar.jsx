@@ -31,8 +31,8 @@ const Navbar = () => {
             </li>
           ))
         }
-        <Button>
-          Get Started
+        <Button className="md:ml-8">
+          Add Listing
         </Button>
       </ul>
       </div>
