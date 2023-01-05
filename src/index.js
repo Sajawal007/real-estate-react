@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import {Route,Routes} from 'react-router-dom';
 import Listings from './Listings/Listings';
 import Login from './Login/Login';
+import ListingDetails from './ListingDetails/ListingDetails'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
       <Route path = "/create" element = {<CreateListing/>}/>
       <Route path = "/listings" element = {<Listings/>}/>
       <Route path = "/login" element = {<Login/>}/>
+      <Route path = "/details" element = {<ListingDetails/>}/>
       </Routes>
     </BrowserRouter>
     {/* <CreateListing/> */}

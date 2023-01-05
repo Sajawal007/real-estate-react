@@ -8,12 +8,12 @@ const Card=(props)=>{
     const userName = props.userName
 
 return (
-    <div className="py-10 pl-10 mx-10">
+    <div className="py-10 pl-10 mx-10" onClick={()=>{props.onSelect(props.id)}}>
         <div className='rounded overflow-hidden shadow-lg max-w-sm text-start p-5 bg-gray-100'>
             <img className="w-full h-auto p-5" src="../home.jpg" alt="property img"></img>
             <a className='text-xl font-bold'>{`$${price}`}</a>
-            <p>{property_details}</p>
-            <p>{address}</p>
+            <p className='text-s'>{property_details}</p>
+            <p className='text-xs'>{address}</p>
             <p className='text-xs'>Listing by {userName}</p>
         </div>
     </div>

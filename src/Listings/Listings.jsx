@@ -4,28 +4,59 @@ import { Users } from "../Data/Data";
 import { useState } from "react";
 import { Properties } from "../Data/Data";
 import Navbar from "../components/Navbar";
+import ListingDetails from '../ListingDetails/ListingDetails'
 
 export default function Listings (props) {
-
-
-    const [properties, setProperties] = useState(Properties);
-    const setListingObject = (newObject) => {
-        const updatedProperties = [...properties, ...[newObject]]
-        setProperties(updatedProperties);
-        console.log(properties);
+    const [query,setQuery] = useState("")
+    const [clicked, setClicked] = useState(false)
+    const [clicked_key,setClickedKey] = useState(-1)
+    const handleClick = (key) => {
+      setClicked(!clicked);
+      setClickedKey(key);
+    }
+    let [properties, setProperties] = useState(Properties);
+    const getUpdatedData = () => {
+        let list = localStorage.getItem('properties-list');
+        if (list)
+        {
+          const lists = JSON.parse(list);
+          properties = lists
+          // lists.map((elem) => {
+          //   let found = false
+          //   for(let j=0;j<properties.length;j++)
+          //   {
+          //     if(properties[j].listingID == elem.listingID)
+          //     {
+          //       found = true
+          //     }
+          //   }
+          //   if(found==false)
+          //   properties.push(elem)
+          
+        }
       }
+      
+      getUpdatedData()
     return(
         <>
+        
         <Navbar Listings = {properties}/>
-        <div className="w-full h-screen bg-white mx-auto pt-40">
+        {clicked && <ListingDetails properties={properties} id={clicked_key}/>}
+        <div className="ml-[500px]">
+            <div>
+               {!clicked && <input type='text' className='border rounded-lg border-gray-800 p-4 mt-[100px]' placeholder='Search by Coordinates' value={query}
+                onChange={(e)=>{setQuery(e.target.value)}}
+                /> }
+            </div>
+            </div>
+        <div className="w-full h-screen bg-white mx-auto">
         <div className='flex flex-row bg-white overflow-auto'>
-        {properties.map((property)=>{ 
-        return <Card key={property.listingID} price={property.listingPrice}
+        {!clicked && properties.filter((property)=>property.coordinates.includes(query)).map((property)=>{ 
+        return <Card onSelect ={handleClick} id={property.listingID} key={property.listingID} price={property.listingPrice}
             beds={property.bedroomNumber} baths={property.bathroomNumber} area = {property.sqftNumber}
-            userName = {Users[property.userAdded].name} address ={property.address}
+            userName = {Users[property.userAdded].name} address ={property.coordinates}
         />
         })}
-
         </div>
         </div>
         </>

@@ -2,18 +2,14 @@ import {useState,React} from "react";
 import Button from "../components/Button";
 import Navbar from "../components/Navbar";
 import { Properties } from "../Data/Data";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 
 
 
 
 const CreateListing = () =>{
-
-    const location = useLocation()
-    const { properties,setListingObject } = location.state
     
-
     let [listinID,setListingID] = useState(-1);
     let [listingAddress,setListingAddress] = useState("")
     let [listingPrice,setListingPrice] = useState("")
@@ -21,25 +17,29 @@ const CreateListing = () =>{
     let [bathrooms,setBathrooms] = useState("")
     let [sqftNumber,setSqftNumber] = useState("")
     let [contact,setContact] = useState("")
-    let [comments,setComments] = useState("")
+    let [comments,setComments] = useState([])
+    let[coordinates,setCoordinates] = useState("")
     let [listingObject, setListingObject_] = useState(Properties[0])
-
+    const [properties,addProperty] = useState(Properties)
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newProperty = {
-            listingID: listinID, 
+            listingID: properties.length, 
             listingAddress: listingAddress,
+            coordinates:coordinates,
             listingPrice: listingPrice,
             bedroomNumber: bedrooms,
             bathroomNumber: bathrooms,
             sqftNumber: sqftNumber,
             contact: contact,
             comments: [],
-            userAdded: "0",
+            userAdded: 0,
         }
         setListingObject_(newProperty);
-        setListingObject(listingObject);
+        properties.push(newProperty);
+        localStorage.setItem('properties-list',JSON.stringify(properties))
+        {<Link to="/"/>}
     }
 
     return (
@@ -51,6 +51,8 @@ const CreateListing = () =>{
                 <h1 className="text-black pt-40 w-1/2 mx-auto text-2xl font-bold">POST PROPERTY</h1>
                 <input className="border rounded border-white-800 m-4 p-4" type="text" placeholder="Enter Address" name="address" 
                 onChange={(e) => setListingAddress(e.target.value)} value={listingAddress}/>
+                <input className="border rounded border-white-800 m-4 p-4" type="text" placeholder="Enter Coordinates lat,long" name="coordinates" 
+                onChange={(e) => setCoordinates(e.target.value)} value={coordinates}/>
                 
                 <input className="border rounded border-white-800 m-4 p-2" type="text" placeholder="Enter Price" name="price" 
                 onChange={(e) => setListingPrice(e.target.value)} value={listingPrice}/>
