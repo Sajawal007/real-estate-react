@@ -8,34 +8,41 @@ import { Link, useLocation } from "react-router-dom";
 
 
 
-const CreateListing = (prop) =>{
+const EditListing = () =>{
+    //check status whether user has updated the forms or not
     const [updated,setUpdated] = useState(false)
 
     const toggleUpdated = () => {
         setUpdated(!updated)
     }
-
-    let [listinID,setListingID] = useState(-1);
-    let [listingAddress,setListingAddress] = useState("")
-    let [listingPrice,setListingPrice] = useState("")
-    let [bedrooms,setBedrooms] = useState("")
-    let [bathrooms,setBathrooms] = useState("")
-    let [sqftNumber,setSqftNumber] = useState("")
-    let [contact,setContact] = useState("")
-    let [comments,setComments] = useState([])
-    let[coordinates,setCoordinates] = useState("")
-    let [listingObject, setListingObject_] = useState(Properties[0])
+    {/*Using <Link> library to obtain values(ID) passed as propes through button press */}
+    const location = useLocation()
+    const { from } = location.state
+    console.log(from)
+    const [id,setID] = useState(from)
     let [properties,addProperty] = useState(Properties)
     const list = localStorage.getItem('properties-list')
     if(list){
         const lists = JSON.parse(list)
         properties = lists
     }
+    // declaring each attribute of listings to take inputs
+    let [listinID,setListingID] = useState(id);
+    let [listingAddress,setListingAddress] = useState(properties[listinID]['listingAddress'])
+    let [listingPrice,setListingPrice] = useState(properties[listinID]['listingPrice'])
+    let [bedrooms,setBedrooms] = useState(properties[listinID]['bedroomNumber'])
+    let [bathrooms,setBathrooms] = useState(properties[listinID]['bathroomNumber'])
+    let [sqftNumber,setSqftNumber] = useState(properties[listinID]['sqftNumber'])
+    let [contact,setContact] = useState(properties[listinID]['contact'])
+    let [comments,setComments] = useState(properties[listinID]['comments'])
+    let[coordinates,setCoordinates] = useState(properties[listinID]['coordinates'])
+    let [listingObject, setListingObject_] = useState(Properties[0])
 
+    //handles and updates the updated values
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newProperty = {
-            listingID: properties.length, 
+        const updatedProperty = {
+            listingID: id, 
             listingAddress: listingAddress,
             coordinates:coordinates,
             listingPrice: listingPrice,
@@ -46,8 +53,8 @@ const CreateListing = (prop) =>{
             comments: [],
             userAdded: 0,
         }
-        setListingObject_(newProperty);
-        properties.push(newProperty);
+        setListingObject_(updatedProperty);
+        properties[id] = updatedProperty
         localStorage.setItem('properties-list',JSON.stringify(properties))
     }
 
@@ -57,8 +64,8 @@ const CreateListing = (prop) =>{
         <div className="w-1/3 h-screen bg-white mx-auto">
             <form onSubmit={handleSubmit}>
             <div className="flex flex-col">
-                <h1 className="text-black pt-40 w-1/2 mx-auto text-2xl font-bold">POST PROPERTY</h1>
-                <Button className="w-1/2 mx-auto">Upload Picture</Button>
+                <h1 className="text-black pt-40 w-1/2 mx-auto text-2xl font-bold">EDIT PROPERTY</h1>
+                <Button>Upload Picture</Button>
                 <input className="border rounded border-white-800 m-4 p-4" type="text" placeholder="Enter Address" name="address" 
                 onChange={(e) => setListingAddress(e.target.value)} value={listingAddress}/>
                 <input className="border rounded border-white-800 m-4 p-4" type="text" placeholder="Enter Coordinates lat,long" name="coordinates" 
@@ -74,11 +81,13 @@ const CreateListing = (prop) =>{
                 onChange={(e) => setSqftNumber(e.target.value)} value={sqftNumber}/>
                 <input className="border rounded border-white-800 m-4 p-2" type="text" placeholder="Enter Contact" name="contact" 
                 onChange={(e) => setContact(e.target.value)} value={contact}/>
-                {updated && <h1 className="text-green-600">Success! Your Property Details Are Posted.</h1>}
-                <Button className="w-1/2 mx-auto" type="submit" onSelect={toggleUpdated}>
-                    Submit
-                </Button>
-                
+                {/*Let the user edit and save different input fields*/}
+                {!updated && <Button className="w-1/2 mx-auto" type="submit" onSelect={toggleUpdated}>
+                    Save
+                </Button>}
+                {/*Display success message if the page is updated*/}
+                {updated && <h1 className="text-green-600">Success! Your Details Are Updated.</h1>}
+
             </div>
             </form>
         </div>
@@ -86,4 +95,4 @@ const CreateListing = (prop) =>{
     );
 }
 
-export default CreateListing;
+export default EditListing;

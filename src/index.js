@@ -9,10 +9,13 @@ import {Route,Routes} from 'react-router-dom';
 import Listings from './Listings/Listings';
 import Login from './Login/Login';
 import ListingDetails from './ListingDetails/ListingDetails'
+import EditListing from './EditListing/EditListing';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    {/* Defining Multiple Pages paths on respective link access 
+    e.g: localhost:3000/create to access page for new property to create*/}
     <BrowserRouter>
     <Routes>
       <Route exact path = "/" element = {<Homepage/>}/>
@@ -20,6 +23,7 @@ root.render(
       <Route path = "/listings" element = {<Listings/>}/>
       <Route path = "/login" element = {<Login/>}/>
       <Route path = "/details" element = {<ListingDetails/>}/>
+      <Route path = "/editing" element = {<EditListing/>}/>
       </Routes>
     </BrowserRouter>
     {/* <CreateListing/> */}

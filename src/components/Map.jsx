@@ -15,6 +15,7 @@ const Map = (props) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        {/*insert all property's lat,long on maps by drawing markers*/}
         {properties.map((property,ind)=>{
           return <CustomMarker key={ind} location={property.coordinates} text={property.listingAddress}/>
         })

@@ -1,3 +1,5 @@
+//Different Dummy Data is formulated, helps test the functionalities and to enrich the user experience
+//Starter Data
 const Users = [
     {
         userID: 0,

@@ -1,14 +1,15 @@
 import {React, useState,useEffect} from "react";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
+import {Link} from 'react-router-dom'
 
 const ListingDetails = (props) => {
-    const [properties, setProperties] = useState(props.properties);
+    let [properties, setProperties] = useState(props.properties);
     const [id,setID] = useState(props.id);
     const [addComment, setAddComment] = useState(false)
     const [comment_, setComment] = useState("")
     const [email_, setEmail] = useState("")
-    
+    const [deleted,setDeleted] = useState(false)
 
     const toggleComment = () =>{
         setAddComment(!addComment)
@@ -17,19 +18,29 @@ const ListingDetails = (props) => {
     const updateDB = () => {
         console.log(properties)
     }
-
+    //add Newly made comment to property's comment list
+    //then save updated properties into local db
     const addCommentToProperty = (e) => {
         e.preventDefault();
         const newCom = {comment: comment_, email:email_}
-        // console.log(newCom)
         properties[id]['comments'].push(newCom)
         localStorage.setItem('properties-list', JSON.stringify(properties));
         toggleComment()
     }
+    // find property by id to delete it
+    // update localstorage after deletion
+    const deleteProperty = () => {
+        const newVal = properties.filter((property)=>{return property.listingID != id})
+        localStorage.setItem('properties-list', JSON.stringify(newVal));
+        properties = newVal
+        setDeleted(true)
+    }
 
     const property_details = `${properties[id]['bedroomNumber']} bds | ${properties[id]['bathroomNumber']} ba | ${properties[id]['sqftNumber']} sqft - House For Sale`
+    
+    //Once the properties data is updated refresh the page to reflect the comment changes
     useEffect(() => {
-        // localStorage.setItem('properties-list', JSON.stringify(properties));
+        
     }, [properties]);
 
     return(
@@ -47,6 +58,7 @@ const ListingDetails = (props) => {
                         </div> 
             })} 
             <Button className="bg-green-700" onSelect={toggleComment}>Add Comment</Button>
+            {/*show comment fields to add new comment*/}
             {addComment &&<div>
                 <form onSubmit={(addCommentToProperty)}>
                 <input className="border rounded border-white-800 m-4 p-4" type="text" placeholder="write comment here" name="comment" 
@@ -65,9 +77,20 @@ const ListingDetails = (props) => {
         <p className='text-xs'>{properties[id]['listingAddress']}</p>
         <p className='text-'>{properties[id]['contact']}</p>
         <p className='text-xs'>{properties[id]['coordinates']}</p>
+        {/*deletes Single Listing Property*/}
+        <Button className='bg-navBackgroundColor m-2' onSelect={deleteProperty}>Delete</Button>
+        {/*edits Listing Property
+            Link library helps Buttons to navigate to different components alongwith payload
+            which in this case is id of present listing property
+        */}
+        <Link to="/editing" state={{from:id}}><Button className='bg-green-600'>Edit</Button></Link>
+        {/*once the deleted button is pressed show message on screen*/}
+        {deleted && <h1 className="text-xl text-red-800">Property has been deleted!</h1>}
         </div>
         </div>
+        
         </div>
+        
     );
 }
 
