@@ -1,8 +1,9 @@
-import {useState,React} from "react";
+import {useState,React, useEffect} from "react";
 import Button from "../components/Button";
 import Navbar from "../components/Navbar";
 import { Properties } from "../Data/Data";
 import { Link, useLocation } from "react-router-dom";
+import {inputValidation} from '../inputValidation'
 
 
 
@@ -10,9 +11,13 @@ import { Link, useLocation } from "react-router-dom";
 
 const CreateListing = (prop) =>{
     const [updated,setUpdated] = useState(false)
-
+    const [error, setError] = useState(false)
+    
     const toggleUpdated = () => {
         setUpdated(!updated)
+    }
+    const toggleError=  () => {
+        setError(!error)
     }
 
     let [listinID,setListingID] = useState(-1);
@@ -34,6 +39,9 @@ const CreateListing = (prop) =>{
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (error) toggleError()
+
         const newProperty = {
             listingID: properties.length, 
             listingAddress: listingAddress,
@@ -47,8 +55,20 @@ const CreateListing = (prop) =>{
             userAdded: 0,
         }
         setListingObject_(newProperty);
-        properties.push(newProperty);
-        localStorage.setItem('properties-list',JSON.stringify(properties))
+        // validation check
+        const errString = inputValidation(newProperty);
+
+        if (errString == null)
+        {
+            properties.push(newProperty);
+            toggleUpdated()
+            localStorage.setItem('properties-list',JSON.stringify(properties))
+        }
+        else
+        {
+            toggleError()
+            alert(errString)
+        }
     }
 
     return (
@@ -75,7 +95,8 @@ const CreateListing = (prop) =>{
                 <input className="border rounded border-white-800 m-4 p-2" type="text" placeholder="Enter Contact" name="contact" 
                 onChange={(e) => setContact(e.target.value)} value={contact}/>
                 {updated && <h1 className="text-green-600">Success! Your Property Details Are Posted.</h1>}
-                <Button className="w-1/2 mx-auto" type="submit" onSelect={toggleUpdated}>
+            
+                <Button className="w-1/2 mx-auto" type="submit">
                     Submit
                 </Button>
                 

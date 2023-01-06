@@ -2,6 +2,7 @@ import {React, useState,useEffect} from "react";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import {Link} from 'react-router-dom'
+import { inputValidation,validateEmail } from "../inputValidation";
 
 const ListingDetails = (props) => {
     let [properties, setProperties] = useState(props.properties);
@@ -10,10 +11,15 @@ const ListingDetails = (props) => {
     const [comment_, setComment] = useState("")
     const [email_, setEmail] = useState("")
     const [deleted,setDeleted] = useState(false)
+    const [error, setError] = useState(false)
 
     const toggleComment = () =>{
         setAddComment(!addComment)
     } 
+
+    const toggleError=  () => {
+        setError(!error)
+    }
 
     const updateDB = () => {
         console.log(properties)
@@ -22,10 +28,24 @@ const ListingDetails = (props) => {
     //then save updated properties into local db
     const addCommentToProperty = (e) => {
         e.preventDefault();
+
+        if (error) toggleError()
+
         const newCom = {comment: comment_, email:email_}
-        properties[id]['comments'].push(newCom)
-        localStorage.setItem('properties-list', JSON.stringify(properties));
-        toggleComment()
+
+        const errString = validateEmail(newCom);
+
+        if (errString == null)
+        {
+            properties[id]['comments'].push(newCom)
+            localStorage.setItem('properties-list', JSON.stringify(properties));
+            toggleComment()
+        }
+        else
+        {
+            toggleError()
+            alert(errString)
+        }
     }
     // find property by id to delete it
     // update localstorage after deletion

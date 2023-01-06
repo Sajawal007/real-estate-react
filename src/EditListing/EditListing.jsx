@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import Navbar from "../components/Navbar";
 import { Properties } from "../Data/Data";
 import { Link, useLocation } from "react-router-dom";
+import { inputValidation } from "../inputValidation";
 
 
 
@@ -11,14 +12,20 @@ import { Link, useLocation } from "react-router-dom";
 const EditListing = () =>{
     //check status whether user has updated the forms or not
     const [updated,setUpdated] = useState(false)
+    const [error, setError] = useState(false)
+
 
     const toggleUpdated = () => {
         setUpdated(!updated)
     }
+
+    const toggleError=  () => {
+        setError(!error)
+    }
     {/*Using <Link> library to obtain values(ID) passed as propes through button press */}
     const location = useLocation()
     const { from } = location.state
-    console.log(from)
+    
     const [id,setID] = useState(from)
     let [properties,addProperty] = useState(Properties)
     const list = localStorage.getItem('properties-list')
@@ -41,6 +48,9 @@ const EditListing = () =>{
     //handles and updates the updated values
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        if (error) toggleError()
+
         const updatedProperty = {
             listingID: id, 
             listingAddress: listingAddress,
@@ -54,8 +64,20 @@ const EditListing = () =>{
             userAdded: 0,
         }
         setListingObject_(updatedProperty);
-        properties[id] = updatedProperty
-        localStorage.setItem('properties-list',JSON.stringify(properties))
+        // validation check
+        const errString = inputValidation(updatedProperty);
+
+        if (errString == null)
+        {
+            properties[id] = updatedProperty
+            toggleUpdated()
+            localStorage.setItem('properties-list',JSON.stringify(properties))
+        }
+        else
+        {
+            toggleError()
+            alert(errString)
+        }
     }
 
     return (
@@ -82,11 +104,11 @@ const EditListing = () =>{
                 <input className="border rounded border-white-800 m-4 p-2" type="text" placeholder="Enter Contact" name="contact" 
                 onChange={(e) => setContact(e.target.value)} value={contact}/>
                 {/*Let the user edit and save different input fields*/}
-                {!updated && <Button className="w-1/2 mx-auto" type="submit" onSelect={toggleUpdated}>
+                {!updated && <Button className="w-1/2 mx-auto" type="submit">
                     Save
                 </Button>}
                 {/*Display success message if the page is updated*/}
-                {updated && <h1 className="text-green-600">Success! Your Details Are Updated.</h1>}
+                {updated && !error && <h1 className="text-green-600">Success! Your Details Are Updated.</h1>}
 
             </div>
             </form>
