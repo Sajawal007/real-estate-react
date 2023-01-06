@@ -12,6 +12,7 @@ import {inputValidation} from '../inputValidation'
 const CreateListing = (prop) =>{
     const [updated,setUpdated] = useState(false)
     const [error, setError] = useState(false)
+    const [errorMsg, setErrorMsg] = useState("")
     
     const toggleUpdated = () => {
         setUpdated(!updated)
@@ -41,6 +42,7 @@ const CreateListing = (prop) =>{
         e.preventDefault();
 
         if (error) toggleError()
+        setErrorMsg("")
 
         const newProperty = {
             listingID: properties.length, 
@@ -66,8 +68,8 @@ const CreateListing = (prop) =>{
         }
         else
         {
+            setErrorMsg(errString)
             toggleError()
-            alert(errString)
         }
     }
 
@@ -94,11 +96,11 @@ const CreateListing = (prop) =>{
                 onChange={(e) => setSqftNumber(e.target.value)} value={sqftNumber}/>
                 <input className="border rounded border-white-800 m-4 p-2" type="text" placeholder="Enter Contact" name="contact" 
                 onChange={(e) => setContact(e.target.value)} value={contact}/>
-                {updated && <h1 className="text-green-600">Success! Your Property Details Are Posted.</h1>}
-            
-                <Button className="w-1/2 mx-auto" type="submit">
+                {updated && !error && <h1 className="text-green-600">Success! Your Property Details Are Posted.</h1>}
+                {!updated && <h1 className="text-red-600">{errorMsg}</h1>}
+                {!updated && <Button className="w-1/2 mx-auto" type="submit">
                     Submit
-                </Button>
+                </Button>}
                 
             </div>
             </form>

@@ -13,6 +13,7 @@ const EditListing = () =>{
     //check status whether user has updated the forms or not
     const [updated,setUpdated] = useState(false)
     const [error, setError] = useState(false)
+    const [errorMsg, setErrorMsg] = useState("")
 
 
     const toggleUpdated = () => {
@@ -48,7 +49,7 @@ const EditListing = () =>{
     //handles and updates the updated values
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         if (error) toggleError()
 
         const updatedProperty = {
@@ -76,7 +77,8 @@ const EditListing = () =>{
         else
         {
             toggleError()
-            alert(errString)
+            setErrorMsg("")
+            setErrorMsg(errString)
         }
     }
 
@@ -104,6 +106,7 @@ const EditListing = () =>{
                 <input className="border rounded border-white-800 m-4 p-2" type="text" placeholder="Enter Contact" name="contact" 
                 onChange={(e) => setContact(e.target.value)} value={contact}/>
                 {/*Let the user edit and save different input fields*/}
+                {!updated && <h1 className="text-red-600">{errorMsg}</h1>}
                 {!updated && <Button className="w-1/2 mx-auto" type="submit">
                     Save
                 </Button>}

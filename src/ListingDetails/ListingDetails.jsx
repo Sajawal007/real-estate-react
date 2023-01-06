@@ -11,10 +11,17 @@ const ListingDetails = (props) => {
     const [comment_, setComment] = useState("")
     const [email_, setEmail] = useState("")
     const [deleted,setDeleted] = useState(false)
+
+    //for input validations, states checks for live error
     const [error, setError] = useState(false)
+    const [errorMsg, setErrorMsg] = useState("")
+    const [commentAdded,setCommentAddded] = useState(false)
 
     const toggleComment = () =>{
         setAddComment(!addComment)
+    } 
+    const toggleCommentAdded = () =>{
+        setCommentAddded(!commentAdded)
     } 
 
     const toggleError=  () => {
@@ -28,23 +35,27 @@ const ListingDetails = (props) => {
     //then save updated properties into local db
     const addCommentToProperty = (e) => {
         e.preventDefault();
-
+        // reset error before check
         if (error) toggleError()
 
         const newCom = {comment: comment_, email:email_}
-
+        //returns string whether error or no error(null)
         const errString = validateEmail(newCom);
-
+        
         if (errString == null)
         {
+            //no error
             properties[id]['comments'].push(newCom)
             localStorage.setItem('properties-list', JSON.stringify(properties));
             toggleComment()
+            toggleCommentAdded()
         }
         else
         {
+            //validation error occured
             toggleError()
-            alert(errString)
+            setErrorMsg("")
+            setErrorMsg(errString)
         }
     }
     // find property by id to delete it
@@ -85,6 +96,7 @@ const ListingDetails = (props) => {
                 onChange={(e) => setComment(e.target.value)} value={comment_}/>
                 <input className="border rounded border-white-800 m-4 p-4" type="text" placeholder="Enter email Address" name="email" 
                 onChange={(e) => setEmail(e.target.value)} value={email_}/>
+                {!commentAdded && <h1 className="text-xl text-red-800">{errorMsg}</h1>}
                 <Button type="submit">Submit</Button>
                 </form>
                 </div>}
