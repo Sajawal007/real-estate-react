@@ -1,11 +1,14 @@
-# Libraries Required to Run this Web APP
-### npm install react-router-dom
-### npm install react-leaflet
-### npm install tailwindcss
-### npm install ionicons
-
-
-
-
-Site Hosted Link:
+# Code Hosted
 https://nyrealestate.netlify.app/
+
+
+## Libraries Required to Run this Web APP
+npm i react-router-dom<br>
+npm i react-leaflet<br>
+npm i tailwindcss<br>
+npm i ionicons<br>
+
+
+
+
+
