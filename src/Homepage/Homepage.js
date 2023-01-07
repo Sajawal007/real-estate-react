@@ -70,9 +70,9 @@ function Homepage() {
             </div>
             <div className='lg:w-2/6 md:w-2/6 bg-white overflow-auto sm:w-full'>
             {/*SHOW ALL LISTINGS propertie on right side of homepage*/}
-              {properties.filter((property)=>property.coordinates.includes(query)).map((property)=>{ 
-                return <Link key={property.listingID} to="/details" state={{"details": {"properties": properties, "id": property.listingID}}}>
-                <Card id={property.listingID} key={property.listingID} price={property.listingPrice} 
+              {properties.filter((property)=>property.coordinates.includes(query)).map((property, ind)=>{ 
+                return <Link key={ind} to="/details" state={{"details": {"properties": properties, "id": ind}}}>
+                <Card id={ind} key={property.listingID} price={property.listingPrice} 
                   beds={property.bedroomNumber} baths={property.bathroomNumber} area = {property.sqftNumber}
                   userName = {Users[property.userAdded].name} address ={property.coordinates}
                 />
