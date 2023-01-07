@@ -76,9 +76,9 @@ const CreateListing = (prop) =>{
     return (
         <>
         <Navbar/>
-        <div className="w-1/3 h-screen bg-white mx-auto">
+        <div className="lg:w-1/3 md:w-1/2 sm:w-full h-screen bg-white mx-auto">
             <form onSubmit={handleSubmit}>
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
                 <h1 className="text-black pt-32 w-1/2 mx-auto text-2xl font-bold">POST PROPERTY</h1>
                 <Button className="w-1/2 mx-auto">Upload Picture</Button>
                 <input className="border rounded border-white-800 m-4 p-4" type="text" placeholder="Enter Address" name="address" 

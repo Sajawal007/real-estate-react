@@ -54,7 +54,7 @@ function Homepage() {
                 <input type='text' className='border rounded-lg border-gray-300 p-4 pl-10' placeholder='Search by Coordinates' value={query}
                 onChange={(e)=>{setQuery(e.target.value)}}/>
             </div>
-          <div className='flex h-3/4 mt-4 mx-10 pb-20'>
+          <div className='flex h-3/4 mt-4 mx-10 pb-10'>
             <div className='w-0 bg-gray-300 lg:visible invisible lg:w-2/3 overflow-auto'>
               {/*MAP API IS INSERTED HERE, properties passed as props value*/}
             <MapContainer center={[40.7128, -74.0060]} zoom={15} scrollWheelZoom={false}>
@@ -68,7 +68,7 @@ function Homepage() {
                 })} 
             </MapContainer>
             </div>
-            <div className='lg:w-2/6 md:w-2/6 bg-white overflow-auto sm:w-full'>
+            <div className='lg:w-2/6 md:w-2/6 bg-white overflow-auto sm:w-full md:w-full'>
             {/*SHOW ALL LISTINGS propertie on right side of homepage*/}
               {properties.filter((property)=>property.coordinates.includes(query)).map((property, ind)=>{ 
                 return <Link key={ind} to="/details" state={{"details": {"properties": properties, "id": ind}}}>
@@ -78,7 +78,6 @@ function Homepage() {
                 />
                 </Link>
               })}
-              {/* <Link to="/details" state={{"details": {"properties": properties, "id": clicked_key}}}><ListingDetails/></Link> */}
               
 
             </div>

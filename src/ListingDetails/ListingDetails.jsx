@@ -88,15 +88,15 @@ const ListingDetails = () => {
     return(
         <div className="container">
         <Navbar/>
-        <div className="flex flex-row m-28 shadow-lg divide-x-4">
-        <div className="w-1/2">
+        <div className="flex lg:flex-row md:flex-row sm:flex-col mt-28 shadow-lg divide-x-4">
+        <div className="w-1/2 lg:pl-28 md:pl-10 sm:pl-0">
             <img src="../home.jpg" alt="home image"></img>
-            <h1 className='text-4xl mt-4 font-bold text-black'>Comments & Reviews</h1>
-            <div  className="pr-2 divide-y-2">
+            <h1 className='lg:text-4xl md:text-2xl sm:text-xs mt-4 font-bold text-black'>Comments & Reviews</h1>
+            <div  className="divide-y-2">
             {properties[id]['comments'].map((comment,ind)=>{
-                return  <div key={ind} className="mt-4 p-2 bg-slate-500 rounded-md">
+                return  <div key={ind} className="mt-4 p-2 bg-[#0F0F0F] text-[#D8D8D8] rounded-md">
                         <h1 className="text-xl">{comment.comment}</h1>
-                        <p className="text-sm text-end">by {comment.email}</p>
+                        <p className="text-sm text-end ">by {comment.email}</p>
                         </div> 
             })} 
             <Button className="bg-green-700" onSelect={toggleComment}>Add Comment</Button>

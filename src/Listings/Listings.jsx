@@ -36,16 +36,14 @@ export default function Listings (props) {
         
         <Navbar Listings = {properties}/>
         {/*IF a property is selected show its details*/}
-        <div className="ml-[500px]">
-            <div>
+        <div className="flex flex-row justify-center">
               {/*Show search bar only when no component is selected to view in details*/}
                {!clicked && <input type='text' className='border rounded-lg border-gray-800 p-4 mt-[100px]' placeholder='Search by Coordinates' value={query}
                 onChange={(e)=>{setQuery(e.target.value)}}
                 /> }
             </div>
-            </div>
         <div className="w-full h-screen bg-white mx-auto">
-        <div className='flex flex-row bg-white overflow-auto'>
+        <div className='lg:flex lg:flex-row md:flex md:flex-row sm:grid sm:grid-flow-col justify-center bg-white overflow-auto sm:flex-col'>
           {/*Show all the listings properties if no component is selected to view in details*/}
         {properties.filter((property)=>property.coordinates.includes(query)).map((property,ind)=>{ 
         return <Link key={ind} to="/details" state={{"details": {"properties": properties, "id": ind}}}>
