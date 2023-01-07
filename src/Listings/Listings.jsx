@@ -5,6 +5,7 @@ import { useState,useEffect } from "react";
 import { Properties } from "../Data/Data";
 import Navbar from "../components/Navbar";
 import ListingDetails from '../ListingDetails/ListingDetails'
+import { Link } from "react-router-dom";
 
 export default function Listings (props) {
     /* Searching String */
@@ -35,7 +36,6 @@ export default function Listings (props) {
         
         <Navbar Listings = {properties}/>
         {/*IF a property is selected show its details*/}
-        {clicked && <ListingDetails properties={properties} id={clicked_key}/>}
         <div className="ml-[500px]">
             <div>
               {/*Show search bar only when no component is selected to view in details*/}
@@ -47,11 +47,12 @@ export default function Listings (props) {
         <div className="w-full h-screen bg-white mx-auto">
         <div className='flex flex-row bg-white overflow-auto'>
           {/*Show all the listings properties if no component is selected to view in details*/}
-        {!clicked && properties.filter((property)=>property.coordinates.includes(query)).map((property)=>{ 
-        return <Card onSelect ={handleClick} id={property.listingID} key={property.listingID} price={property.listingPrice}
+        {properties.filter((property)=>property.coordinates.includes(query)).map((property)=>{ 
+        return <Link key={property.listingID} to="/details" state={{"details": {"properties": properties, "id": property.listingID}}}>
+          <Card id={property.listingID} key={property.listingID} price={property.listingPrice}
             beds={property.bedroomNumber} baths={property.bathroomNumber} area = {property.sqftNumber}
             userName = {Users[property.userAdded].name} address ={property.coordinates}
-        />
+           ></Card></Link>
         })}
         </div>
         </div>

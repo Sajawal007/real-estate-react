@@ -1,12 +1,23 @@
 import {React, useState,useEffect} from "react";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import { inputValidation,validateEmail } from "../inputValidation";
 
-const ListingDetails = (props) => {
-    let [properties, setProperties] = useState(props.properties);
-    const [id,setID] = useState(props.id);
+const ListingDetails = () => {
+    const location = useLocation()
+    
+    const {details} = location.state
+    
+    useEffect (()=>{
+        console.log(location)
+    },[location])
+
+    
+    // console.log(details)
+
+    let [properties, setProperties] = useState(details['properties']);
+    const [id,setID] = useState(details['id']);
     const [addComment, setAddComment] = useState(false)
     const [comment_, setComment] = useState("")
     const [email_, setEmail] = useState("")
